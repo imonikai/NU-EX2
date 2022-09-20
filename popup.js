@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
             divElement.textContent = "";
 
             const shutokuTable = createTable("取得済み単位", response.shutokuDic, response.kamokuNameArray);
-            divElement.after(shutokuTable);
+            divElement.appendChild(shutokuTable);
             const rishuchuTable = createTable("履修中単位", response.rishuchuDic, response.kamokuNameArray);
             shutokuTable.after(rishuchuTable);
             const gpaElement = document.createElement('p');
