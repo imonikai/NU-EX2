@@ -89,7 +89,6 @@ window.addEventListener('load', () => {
 
         //popupにレスポンス
         chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
-            console.log(request.message);
 
             sendReponse(
                 {
