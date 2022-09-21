@@ -4,7 +4,7 @@ window.addEventListener('load', () => {
     chrome.tabs.query({active:true, currentWindow:true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {message: "NU-PortalExtension"}, (response) => {
 
-            const divElement = document.querySelector("#description");
+            const divElement = document.querySelector("#container");
 
             if(response.status === "OK")
             {
@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
                 const rishuchuTable = createTable("履修中単位", response.rishuchuDic, response.kamokuNameArray);
                 shutokuTable.after(rishuchuTable);
                 const gpaElement = document.createElement('p');
-                gpaElement.textContent = 'あなたのGPA: ' + response.gpa + '　(by NU-PortalExtension2)';
+                gpaElement.textContent = 'あなたのGPA: ' + response.gpa;
                 gpaElement.style.fontSize = '1.2em';
                 gpaElement.style.marginTop = '1em';
                 gpaElement.style.marginBottom = '1em';
