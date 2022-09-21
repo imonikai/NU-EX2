@@ -90,16 +90,24 @@ window.addEventListener('load', () => {
         //popupにレスポンス
         chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
 
-            sendReponse(
-                {
-                    shutokuDic:shutokuDic,
-                    rishuchuDic:rishuchuDic,
-                    kamokuNameArray:kamokuNameArray,
-                    sumShutoku:sumShutoku,
-                    sumRishuchu:sumRishuchu,
-                    gpa:gpa
-                }
-            )
+            if(pageTitle.includes("成績照会"))
+            {
+                sendReponse(
+                    {
+                        status:"OK",
+                        shutokuDic:shutokuDic,
+                        rishuchuDic:rishuchuDic,
+                        kamokuNameArray:kamokuNameArray,
+                        sumShutoku:sumShutoku,
+                        sumRishuchu:sumRishuchu,
+                        gpa:gpa
+                    }
+                );
+            }
+            else
+            {
+                sendReponse({status:"NG"});   
+            }
         });
     }
 });
