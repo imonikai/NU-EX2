@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
 
             const divElement = document.querySelector("#container");
 
-            if(response.status === "OK")
+            if( typeof response != "undefined" && response.status === "OK")
             {
                 divElement.textContent = "";
 

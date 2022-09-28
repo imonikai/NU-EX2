@@ -2,7 +2,7 @@
 
 window.addEventListener('load', () => {
 
-    const pageTitle = document.querySelector("h2").textContent;                                     //成績照会のページかどうか
+    const isScorePage = document.querySelector("h2").textContent.includes("成績照会");                                     //成績照会のページかどうか
     const kamokuArray = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
     const taniArray = getShiftedArray(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
     const hyokaArray = getShiftedArray(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
@@ -17,7 +17,7 @@ window.addEventListener('load', () => {
     let sumRishuchu = 0;              //合計履修中単位数
     let gpa = 0;                      //GPA
 
-    if(pageTitle.includes("成績照会"))
+    if(isScorePage)
     {
         for( let i = 0; i < kamokuArray.length; i++ )
         {
@@ -90,7 +90,7 @@ window.addEventListener('load', () => {
         //popupにレスポンス
         chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
 
-            if(pageTitle.includes("成績照会"))
+            if(isScorePage)
             {
                 sendReponse(
                     {
@@ -108,6 +108,8 @@ window.addEventListener('load', () => {
             {
                 sendReponse({status:"NG"});   
             }
+
+            return true;
         });
     }
 });
