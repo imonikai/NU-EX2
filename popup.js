@@ -1,12 +1,9 @@
 'use strict';
-
 window.addEventListener('load', () => {
     chrome.tabs.query({active:true, currentWindow:true}, (tabs) => {
         chrome.tabs.sendMessage(tabs[0].id, {message: "NU-PortalExtension"}, (response) => {
-
             const divElement = document.querySelector("#container");
-
-            if( typeof response != "undefined" && response.status === "OK")
+            if( response !== undefined && response.status === "OK")
             {
                 divElement.textContent = "";
 
@@ -20,7 +17,7 @@ window.addEventListener('load', () => {
                 gpaElement.style.marginTop = '1em';
                 gpaElement.style.marginBottom = '1em';
                 rishuchuTable.after(gpaElement);
-            }  
+            }
         })
     })
 });

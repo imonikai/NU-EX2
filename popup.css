@@ -1,0 +1,12 @@
+body {
+    min-width: 65em;
+}
+
+#container {
+    text-align:center;
+}
+
+.copyright {
+    display:flex;
+    justify-content: center;
+}
