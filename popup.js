@@ -1,6 +1,13 @@
 'use strict';
+
 window.addEventListener('load', () => {
     chrome.tabs.query({active:true, currentWindow:true}, (tabs) => {
+        const url = tabs[0].url;
+        const hostname = new URL(url).hostname;
+        if(hostname !== "portal.uprx.ce.nihon-u.ac.jp")
+        {
+            return;
+        }
         chrome.tabs.sendMessage(tabs[0].id, {message: "NU-PortalExtension"}, (response) => {
             const divElement = document.querySelector("#container");
             if( response !== undefined && response.status === "OK")
@@ -18,11 +25,11 @@ window.addEventListener('load', () => {
                 gpaElement.style.marginBottom = '1em';
                 rishuchuTable.after(gpaElement);
             }
-        })
-    })
+        });
+    });
 });
 
-function createTable(title,dict, keys)
+function createTable(title, dict, keys)
 {
     const table =  document.createElement('table');
     let tr = document.createElement('tr');

@@ -3,6 +3,9 @@
     "description": "日本大学工学部学生用ポータルサイトの成績照会で取得単位数、履修中単位数、GPAの確認。ポータルサイトリニューアル対応版",
     "version": "0.0.1",
     "manifest_version": 3,
+    "permissions": [
+        "tabs"
+    ],
     "content_scripts": [
         {
             "matches": ["https://portal.uprx.ce.nihon-u.ac.jp/uprx/up/*"],
