@@ -14,9 +14,9 @@ window.addEventListener('load', () => {
         return;
     }
     
-    const kamokuArray = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
-    const taniArray = getShiftedArray(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
-    const hyokaArray = getShiftedArray(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
+    const KAMOKU_ARRAY = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
+    const TANI_ARRAY = getShiftedArray(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
+    const HYOKA_ARRAY = getShiftedArray(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
 
     let shutokuDic = new Object;      //授業種別をキーとして合格単位を格納する連想配列
     let rishuchuDic = new Object;     //授業種別をキーとして履修中単位を格納する連想配列
@@ -30,24 +30,24 @@ window.addEventListener('load', () => {
 
 
 
-    for( let i = 0; i < kamokuArray.length; i++ )
+    for( let i = 0; i < KAMOKU_ARRAY.length; i++ )
     {
-        if(kamokuArray[i].textContent.includes('（必修）') || kamokuArray[i].textContent.includes('（選択）') || kamokuArray[i].textContent.includes('専門教育科目'))
+        if(KAMOKU_ARRAY[i].textContent.includes('（必修）') || KAMOKU_ARRAY[i].textContent.includes('（選択）') || KAMOKU_ARRAY[i].textContent.includes('専門教育科目'))
         {
             //連想配列のキーを設定、存在していなかった場合は0で初期化
-            dicKey = kamokuArray[i].textContent;
+            dicKey = KAMOKU_ARRAY[i].textContent;
             if((dicKey in shutokuDic) === false)
             {
                 shutokuDic[dicKey] = 0;
                 rishuchuDic[dicKey] = 0;
-                kamokuNameArray.push(kamokuArray[i].textContent);   
+                kamokuNameArray.push(KAMOKU_ARRAY[i].textContent);   
             }
         }
 
-        const tani = Number(taniArray[i].textContent);
+        const tani = Number(TANI_ARRAY[i].textContent);
 
         //合格単位数と履修中単位数を計算する
-        switch(hyokaArray[i].textContent)
+        switch(HYOKA_ARRAY[i].textContent)
         {
             case "S":
             case "A":
@@ -64,7 +64,7 @@ window.addEventListener('load', () => {
         }
 
         //重み付けした評価の総計を計算する
-        switch(hyokaArray[i].textContent)
+        switch(HYOKA_ARRAY[i].textContent)
         {
             case "S":
                 sumHyoka += tani * 4;
@@ -81,7 +81,7 @@ window.addEventListener('load', () => {
         }
 
         //合計履修数を計算する
-        switch(hyokaArray[i].textContent)
+        switch(HYOKA_ARRAY[i].textContent)
         {
             case "S":
             case "A":
@@ -90,7 +90,7 @@ window.addEventListener('load', () => {
             case "D":
             case "A":
             case "E":
-                sumRishu += Number(taniArray[i].textContent);
+                sumRishu += Number(TANI_ARRAY[i].textContent);
                 break;
         }
     }
