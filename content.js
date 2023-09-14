@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
         });
         return;
     }
-    
+
     const KAMOKU_ARRAY = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
     const TANI_ARRAY = getShiftedArray(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
     const HYOKA_ARRAY = getShiftedArray(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
@@ -40,7 +40,7 @@ window.addEventListener('load', () => {
             {
                 shutokuDic[dicKey] = 0;
                 rishuchuDic[dicKey] = 0;
-                kamokuNameArray.push(KAMOKU_ARRAY[i].textContent);   
+                kamokuNameArray.push(KAMOKU_ARRAY[i].textContent);
             }
         }
 
@@ -77,7 +77,7 @@ window.addEventListener('load', () => {
                 break;
             case "C":
                 sumHyoka += tani;
-                break;                
+                break;
         }
 
         //合計履修数を計算する
@@ -96,7 +96,7 @@ window.addEventListener('load', () => {
     }
 
     //GPAを計算する
-    gpa = Math.round((sumHyoka/sumRishu) * 100) / 100 
+    gpa = Math.round((sumHyoka/sumRishu) * 100) / 100
 
     //popupにレスポンス
     chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
@@ -113,7 +113,7 @@ window.addEventListener('load', () => {
         );
         return true;
     });
-    
+
 });
 
 function getShiftedArray( nodeList )

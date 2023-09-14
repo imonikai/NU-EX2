@@ -50,7 +50,7 @@ function createTable(title, dict, keys)
     sumTh.style.textAlign = 'center';
     tr.appendChild(sumTh);
     table.appendChild(tr);
-    
+
     tr = document.createElement('tr');
     keys.forEach(key => {
         const td = document.createElement('td');
