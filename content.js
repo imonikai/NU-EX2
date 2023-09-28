@@ -127,3 +127,18 @@ function getShiftedArray( nodeList )
 
     return newArray;
 };
+
+
+window.addEventListener("pageshow", () => {
+
+    const h2 = document.querySelector("h2");
+    const isAttendancePage = (h2 !== null && h2.textContent.includes("学生出欠状況確認") ) ? true : false;
+
+    if(isAttendancePage === false)
+        return;
+
+    document.querySelector(".scroll_div").style.height = "100%";
+    const midashiTables = document.querySelectorAll(".fixed_header_display_none_at_print");
+    midashiTables.forEach( e => e.parentNode.removeChild(e));
+
+});
