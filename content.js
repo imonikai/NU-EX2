@@ -1,8 +1,20 @@
 'use strict';
 
-window.addEventListener('load', () => {
+function getShiftedArray( nodeList )
+{
+    let newArray = new Array;
 
-    const h2 = document.querySelector("h2");
+    for( let i = 1; i < nodeList.length; i++ )
+    {
+        newArray.push(nodeList[i])
+    }
+
+    return newArray;
+};
+
+/* 成績詳細表示のコード */
+function grades( h2 )
+{
     const isScorePage = (h2 !== null && h2.textContent.includes("成績照会") ) ? true : false;
 
     if(isScorePage === false)
@@ -27,7 +39,6 @@ window.addEventListener('load', () => {
     let sumShutoku = 0;               //合計取得単位数
     let sumRishuchu = 0;              //合計履修中単位数
     let gpa = 0;                      //GPA
-
 
 
     for( let i = 0; i < KAMOKU_ARRAY.length; i++ )
@@ -113,32 +124,26 @@ window.addEventListener('load', () => {
         );
         return true;
     });
+}
 
-});
-
-function getShiftedArray( nodeList )
+/* 出欠表表示修正のコード */
+function attendance( h2 )
 {
-    let newArray = new Array;
-
-    for( let i = 1; i < nodeList.length; i++ )
-    {
-        newArray.push(nodeList[i])
-    }
-
-    return newArray;
-};
-
-
-window.addEventListener("pageshow", () => {
-
-    const h2 = document.querySelector("h2");
     const isAttendancePage = (h2 !== null && h2.textContent.includes("学生出欠状況確認") ) ? true : false;
-
-    if(isAttendancePage === false)
-        return;
+    if(isAttendancePage === false ) return;
 
     document.querySelector(".scroll_div").style.height = "100%";
     const midashiTables = document.querySelectorAll(".fixed_header_display_none_at_print");
     midashiTables.forEach( e => e.parentNode.removeChild(e));
+    return;
+}
+
+window.addEventListener('load', () => {
+
+    const h2 = document.querySelector("h2");
+
+    grades(h2);
+    attendance(h2);
 
 });
+
