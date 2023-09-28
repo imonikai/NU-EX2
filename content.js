@@ -1,6 +1,6 @@
 'use strict';
 
-function getLeftShiftedArrayWithNodeList( nodeList )
+function getLeftShiftedArrayFromNodeList( nodeList )
 {
     let newArray = new Array;
 
@@ -27,8 +27,8 @@ function grades( h2 )
     }
 
     const KAMOKU_ARRAY = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
-    const TANI_ARRAY = getLeftShiftedArrayWithNodeList(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
-    const HYOKA_ARRAY = getLeftShiftedArrayWithNodeList(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
+    const TANI_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
+    const HYOKA_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
 
     let shutokuDic = new Object;      //授業種別をキーとして合格単位を格納する連想配列
     let rishuchuDic = new Object;     //授業種別をキーとして履修中単位を格納する連想配列
