@@ -9,7 +9,8 @@
     "content_scripts": [
         {
             "matches": ["https://portal.uprx.ce.nihon-u.ac.jp/uprx/up/*"],
-            "js": ["content.js"]
+            "js": ["content.js"],
+            "run_at":"document_end"
         }
     ],
     "action":{

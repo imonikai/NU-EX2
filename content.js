@@ -1,8 +1,20 @@
 'use strict';
 
-window.addEventListener('load', () => {
+function getLeftShiftedArrayWithNodeList( nodeList )
+{
+    let newArray = new Array;
 
-    const h2 = document.querySelector("h2");
+    for( let i = 1; i < nodeList.length; i++ )
+    {
+        newArray.push(nodeList[i])
+    }
+
+    return newArray;
+};
+
+/* 成績詳細表示のコード */
+function grades( h2 )
+{
     const isScorePage = (h2 !== null && h2.textContent.includes("成績照会") ) ? true : false;
 
     if(isScorePage === false)
@@ -15,8 +27,8 @@ window.addEventListener('load', () => {
     }
 
     const KAMOKU_ARRAY = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
-    const TANI_ARRAY = getShiftedArray(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
-    const HYOKA_ARRAY = getShiftedArray(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
+    const TANI_ARRAY = getLeftShiftedArrayWithNodeList(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
+    const HYOKA_ARRAY = getLeftShiftedArrayWithNodeList(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
 
     let shutokuDic = new Object;      //授業種別をキーとして合格単位を格納する連想配列
     let rishuchuDic = new Object;     //授業種別をキーとして履修中単位を格納する連想配列
@@ -27,7 +39,6 @@ window.addEventListener('load', () => {
     let sumShutoku = 0;               //合計取得単位数
     let sumRishuchu = 0;              //合計履修中単位数
     let gpa = 0;                      //GPA
-
 
 
     for( let i = 0; i < KAMOKU_ARRAY.length; i++ )
@@ -113,17 +124,12 @@ window.addEventListener('load', () => {
         );
         return true;
     });
+}
+
+window.addEventListener('load', () => {
+
+    const h2 = document.querySelector("h2");
+
+    grades(h2);
 
 });
-
-function getShiftedArray( nodeList )
-{
-    let newArray = new Array;
-
-    for( let i = 1; i < nodeList.length; i++ )
-    {
-        newArray.push(nodeList[i])
-    }
-
-    return newArray;
-};
