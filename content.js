@@ -167,7 +167,12 @@ window.addEventListener('load', () => {
 
     const h2 = document.querySelector("h2");
 
+    /* 成績詳細表示 成績ページでないなら何もしない*/
     grades(h2);
-    attendance(h2);
+
+      /* 出席表表示修正 出席ページでない、または設定がオフなら何もしない*/
+    chrome.storage.local.get("fixAttendanceTable").then( (obj) => {
+        if( obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true) attendance(h2);
+    });
 
 });
