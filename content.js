@@ -126,10 +126,53 @@ function grades( h2 )
     });
 }
 
+/* 出欠表表示修正のコード */
+function attendance( h2 )
+{
+    const isAttendancePage = (h2 !== null && h2.textContent.includes("学生出欠状況確認") ) ? true : false;
+    if(isAttendancePage === false ) return;
+
+    /* 出欠表のテーブルが出来るまで待ち、テーブルができたら表示修正関数を呼び出す */
+    const intervalId = setInterval(waitLoad, 1000);
+    let tableExistCheckCount = 0;
+    function waitLoad()
+    {
+        tableExistCheckCount++;
+        console.log("出席テーブルが存在するか調べています。チェック回数:" + tableExistCheckCount);
+        if (document.querySelector(".scroll_div") !== null)
+        {
+            console.log("出席テーブルが見つかりました。チェックを停止します。");
+            clearInterval(intervalId);
+            console.log("チェックが停止されたはずです。");
+            fixAttendanceTable();
+        }
+        else if( tableExistCheckCount === 10 )
+        {
+            console.log("出席テーブルが存在しませんでした。チェックを停止します。");
+            clearInterval(intervalId);
+            console.log("チェックが停止されたはずです。");
+        }
+    }
+
+    /* 表示修正関数 */
+    function fixAttendanceTable()
+    {
+        document.querySelector(".scroll_div").style.height = "100%";
+        const midashiTables = document.querySelectorAll(".fixed_header_display_none_at_print");
+        midashiTables.forEach( e => e.parentNode.removeChild(e));
+    }
+}
+
 window.addEventListener('load', () => {
 
     const h2 = document.querySelector("h2");
 
+    /* 成績詳細表示 成績ページでないなら何もしない*/
     grades(h2);
+
+      /* 出席表表示修正 出席ページでない、または設定がオフなら何もしない*/
+    chrome.storage.local.get("fixAttendanceTable").then( (obj) => {
+        if( obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true) attendance(h2);
+    });
 
 });
