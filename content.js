@@ -13,19 +13,8 @@ function getLeftShiftedArrayFromNodeList( nodeList )
 };
 
 /* 成績詳細表示のコード */
-function grades( h2 )
+function grades()
 {
-    const isScorePage = (h2 !== null && h2.textContent.includes("成績照会") ) ? true : false;
-
-    if(isScorePage === false)
-    {
-        chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
-            sendReponse({status:"NG"});
-            return true;
-        });
-        return;
-    }
-
     const KAMOKU_ARRAY = document.querySelectorAll(".kamokuLevel1, .kamokuLevel2, .kamokuLevel7");   //科目名の配列を取得
     const TANI_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll(".colTani"));                       //単位数の配列を取得
     const HYOKA_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll(".colHyoka"));                     //成績評価の配列を取得
@@ -127,11 +116,8 @@ function grades( h2 )
 }
 
 /* 出欠表表示修正のコード */
-function attendance( h2 )
+function attendance()
 {
-    const isAttendancePage = (h2 !== null && h2.textContent.includes("学生出欠状況確認") ) ? true : false;
-    if(isAttendancePage === false ) return;
-
     /* 出欠表のテーブルが出来るまで待ち、テーブルができたら表示修正関数を呼び出す */
     const intervalId = setInterval(waitLoad, 1000);
     let tableExistCheckCount = 0;
@@ -163,16 +149,37 @@ function attendance( h2 )
     }
 }
 
-window.addEventListener('load', () => {
-
+function main()
+{
     const h2 = document.querySelector("h2");
 
     /* 成績詳細表示 成績ページでないなら何もしない*/
-    grades(h2);
+    const isScorePage = (h2 !== null && h2.textContent.includes("成績照会") ) ? true : false;
+    if(isScorePage === false)
+    {
+        chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
+            sendReponse({status:"default"});
+            return true;
+        });
+    }
+    else
+    {
+        grades();
+    }
 
-      /* 出席表表示修正 出席ページでない、または設定がオフなら何もしない*/
-    chrome.storage.local.get("fixAttendanceTable").then( (obj) => {
-        if( obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true) attendance(h2);
-    });
+    /* 出席表表示修正 出席ページでない、または設定がオフなら何もしない*/
+    const isAttendancePage = (h2 !== null && h2.textContent.includes("学生出欠状況確認") ) ? true : false;
+    if(isAttendancePage === true )
+    {
+        chrome.storage.local.get("fixAttendanceTable").then( (obj) => {
+            if( obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true)
+                attendance();
+        });
+    };
+}
+
+window.addEventListener('load', () => {
+
+    main();
 
 });
