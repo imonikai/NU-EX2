@@ -46,7 +46,7 @@ function grades()
 
         const tani = Number(TANI_ARRAY[i].textContent);
 
-        //合格単位数と履修中単位数を計算する
+        //合格単位数と履修中単位数を計算する。
         switch(HYOKA_ARRAY[i].textContent)
         {
             case "S":
@@ -93,6 +93,29 @@ function grades()
                 sumRishu += Number(TANI_ARRAY[i].textContent);
                 break;
         }
+
+        //合格した科目を緑、不合格の科目を赤で強調する。（設定でオフならしない）
+        chrome.storage.local.get("emphasisOnPassing").then( (obj) => {
+            if( obj.emphasisOnPassing !== undefined && obj.emphasisOnPassing === true )
+            {
+                switch(HYOKA_ARRAY[i].textContent)
+                {
+                    case "S":
+                    case "A":
+                    case "B":
+                    case "C":
+                    case "N":
+                        HYOKA_ARRAY[i].style.background = "#99FF66";
+                        break;
+                    case "D":
+                    case "E":
+                        HYOKA_ARRAY[i].style.background = "#FF82B2";
+                        break;
+                }
+            }
+        });
+
+
     }
 
     //GPAを計算する
