@@ -88,7 +88,6 @@ function grades()
             case "B":
             case "C":
             case "D":
-            case "A":
             case "E":
                 sumRishu += Number(TANI_ARRAY[i].textContent);
                 break;
