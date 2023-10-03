@@ -1,0 +1,16 @@
+{
+  "name": "nuex",
+  "version": "0.0.1",
+  "description": "日本大学工学部学生用ポータルサイトの成績照会で取得単位数、履修中単位数、GPAの確認。ポータルサイトリニューアル対応版",
+  "scripts": {
+    "lint": "eslint *.js",
+    "lint-fix": "eslint --fix *.js"
+  },
+  "author": "Imonikai",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.1"
+  }
+}
