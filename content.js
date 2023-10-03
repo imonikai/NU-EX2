@@ -104,7 +104,7 @@ function grades() {
     // GPAを計算する
     gpa = Math.round((sumHyoka / sumRishu) * 100) / 100;
 
-    // popupにレスポンス
+    // popupからレスポンスされたらデータを渡すようにする
     chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
         sendReponse(
             {
@@ -133,35 +133,37 @@ function attendance() {
     let tableExistCheckCount = 0;
     const intervalId = setInterval(() => {
         tableExistCheckCount += 1;
-        // console.log(`出席テーブルが存在するか調べています。チェック回数:${tableExistCheckCount}`);
+        console.log(`出席テーブルが存在するか調べています。チェック回数:${tableExistCheckCount}`);
         if (document.querySelector('.scroll_div') !== null) {
-            // console.log('出席テーブルが見つかりました。チェックを停止します。');
+            console.log('出席テーブルが見つかりました。チェックを停止します。');
             clearInterval(intervalId);
-            // console.log('チェックが停止されたはずです。');
+            console.log('チェックが停止されたはずです。');
             fixAttendanceTable();
         } else if (tableExistCheckCount === 10) {
-            // console.log('出席テーブルが存在しませんでした。チェックを停止します。');
+            console.log('出席テーブルが存在しませんでした。チェックを停止します。');
             clearInterval(intervalId);
-            // console.log('チェックが停止されたはずです。');
+            console.log('チェックが停止されたはずです。');
         }
     }, 1000);
 }
 
 function main() {
+    // h2要素の取得は現在のページを判定するのに必要
     const h2 = document.querySelector('h2');
 
-    /* 成績詳細表示 成績ページでないなら何もしない */
+    // 成績詳細表示 成績ページでないならポップアップに返す何もないデータを設定する
     const isScorePage = !!((h2 !== null && h2.textContent.includes('成績照会')));
-    if (isScorePage === false) {
+    if (isScorePage === true) {
+        grades();
+    } else {
+        // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
         chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
             sendReponse({ status: 'default' });
             return true;
         });
-    } else {
-        grades();
     }
 
-    /* 出席表表示修正 出席ページでない、または設定がオフなら何もしない */
+    // 出席表表示修正 出席ページでない、または設定がオフなら何もしない
     const isAttendancePage = !!((h2 !== null && h2.textContent.includes('学生出欠状況確認')));
     if (isAttendancePage === true) {
         chrome.storage.local.get('fixAttendanceTable').then((obj) => {
