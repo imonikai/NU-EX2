@@ -9,7 +9,8 @@
     },
     "rules": {
         "indent":["error", 4],
-        "default-case":"off"
+        "default-case":"off",
+        "no-console":"off"
     },
     "globals": {
         "chrome": false
