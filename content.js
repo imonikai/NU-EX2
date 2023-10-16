@@ -1,18 +1,12 @@
-function getLeftShiftedArrayFromNodeList(nodeList) {
-    const newArray = [];
-
-    for (let i = 1; i < nodeList.length; i += 1) {
-        newArray.push(nodeList[i]);
-    }
-
-    return newArray;
-}
-
 /* 成績詳細表示のコード */
 function grades() {
     const KAMOKU_ARRAY = document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7'); // 科目名の配列を取得
-    const TANI_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll('.colTani')); // 単位数の配列を取得
-    const HYOKA_ARRAY = getLeftShiftedArrayFromNodeList(document.querySelectorAll('.colHyoka')); // 成績評価の配列を取得
+
+    const TANI_ARRAY = Array.from(document.querySelectorAll('.colTani')); // 単位数の配列を取得
+    const HYOKA_ARRAY = Array.from(document.querySelectorAll('.colHyoka')); // 成績評価の配列を取得
+
+    TANI_ARRAY.shift(); // 先頭にth要素が入ってしまって処理に不都合なので削除
+    HYOKA_ARRAY.shift(); // 先頭にth要素が入ってしまって処理に不都合なので削除
 
     const shutokuDic = {}; // 授業種別をキーとして合格単位を格納する連想配列
     const rishuchuDic = {}; // 授業種別をキーとして履修中単位を格納する連想配列
@@ -152,7 +146,7 @@ function main() {
     const h2 = document.querySelector('h2');
 
     // 成績詳細表示 成績ページでないならポップアップに返す何もないデータを設定する
-    const isScorePage = !!((h2 !== null && h2.textContent.includes('成績照会')));
+    const isScorePage = (h2 !== null && h2.textContent.includes('成績照会'));
     if (isScorePage === true) {
         grades();
     } else {
@@ -164,7 +158,7 @@ function main() {
     }
 
     // 出席表表示修正 出席ページでない、または設定がオフなら何もしない
-    const isAttendancePage = !!((h2 !== null && h2.textContent.includes('学生出欠状況確認')));
+    const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
     if (isAttendancePage === true) {
         chrome.storage.local.get('fixAttendanceTable').then((obj) => {
             if (obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true) {
