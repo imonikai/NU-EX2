@@ -1,6 +1,6 @@
 /* 成績詳細表示のコード */
 function grades() {
-    const KAMOKU_ARRAY = document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7'); // 科目名の配列を取得
+    const KAMOKU_ARRAY = Array.from(document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7')); // 科目名の配列を取得
 
     const TANI_ARRAY = Array.from(document.querySelectorAll('.colTani')); // 単位数の配列を取得
     const HYOKA_ARRAY = Array.from(document.querySelectorAll('.colHyoka')); // 成績評価の配列を取得
