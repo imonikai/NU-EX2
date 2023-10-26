@@ -1,5 +1,5 @@
-/* 成績詳細表示のコード */
-async function grades() {
+/* 成績ページの関数 */
+async function gradesPage(settings) {
     const KAMOKU_ARRAY = Array.from(document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7')); // 科目名の配列を取得
 
     const TANI_ARRAY = Array.from(document.querySelectorAll('.colTani')); // 単位数の配列を取得
@@ -17,8 +17,6 @@ async function grades() {
     let sumShutoku = 0; // 合計取得単位数
     let sumRishuchu = 0; // 合計履修中単位数
     let gpa = 0; // GPA
-
-    const emphasisOnPassingFlag = await chrome.storage.local.get('emphasisOnPassing'); // 合否強調表示のフラグ
 
     for (let i = 0; i < KAMOKU_ARRAY.length; i += 1) {
         if (KAMOKU_ARRAY[i].textContent.includes('（必修）') || KAMOKU_ARRAY[i].textContent.includes('（選択）') || KAMOKU_ARRAY[i].textContent.includes('専門教育科目')) {
@@ -78,7 +76,7 @@ async function grades() {
         }
 
         // 合格した科目を緑、不合格の科目を赤で強調する。（設定でオフならしない）
-        if (emphasisOnPassingFlag.emphasisOnPassing !== undefined && emphasisOnPassingFlag.emphasisOnPassing === true) {
+        if (settings.emphasisOnPassing === true) {
             switch (HYOKA_ARRAY[i].textContent) {
             case 'S':
             case 'A':
@@ -115,40 +113,51 @@ async function grades() {
     });
 }
 
-/* 出欠表表示修正関数 */
-function attendance() {
+/* 出欠表ページの関数 */
+function attendancePage(settings) {
+    /* テーブルの修正関数 */
     function fixAttendanceTable() {
         document.querySelector('.scroll_div').style.height = '100%';
         const midashiTables = document.querySelectorAll('.fixed_header_display_none_at_print');
         midashiTables.forEach((e) => e.parentNode.removeChild(e));
     }
 
-    /* 出欠表のテーブルが出来るまで待ち、テーブルができたら表示修正をする */
-    let tableExistCheckCount = 0;
-    const intervalId = setInterval(() => {
-        tableExistCheckCount += 1;
-        console.log(`出席テーブルが存在するか調べています。チェック回数:${tableExistCheckCount}`);
-        if (document.querySelector('.scroll_div') !== null) {
-            console.log('出席テーブルが見つかりました。チェックを停止します。');
-            clearInterval(intervalId);
-            console.log('チェックが停止されたはずです。');
-            fixAttendanceTable();
-        } else if (tableExistCheckCount === 10) {
-            console.log('出席テーブルが存在しませんでした。チェックを停止します。');
-            clearInterval(intervalId);
-            console.log('チェックが停止されたはずです。');
-        }
-    }, 1000);
+    /* 出欠表のテーブルが出来るまで待ち、テーブルができたら表示修正をする（設定でオフなら何もしない） */
+    if (settings.fixAttendanceTable === true) {
+        let tableExistCheckCount = 0;
+        const intervalId = setInterval(() => {
+            tableExistCheckCount += 1;
+            console.log(`出席テーブルが存在するか調べています。チェック回数:${tableExistCheckCount}`);
+            if (document.querySelector('.scroll_div') !== null) {
+                console.log('出席テーブルが見つかりました。チェックを停止します。');
+                clearInterval(intervalId);
+                console.log('チェックが停止されたはずです。');
+                fixAttendanceTable();
+            } else if (tableExistCheckCount === 10) {
+                console.log('出席テーブルが存在しませんでした。チェックを停止します。');
+                clearInterval(intervalId);
+                console.log('チェックが停止されたはずです。');
+            }
+        }, 1000);
+    }
 }
 
 async function main() {
+    /* 設定を読み込み（この書き方どうにかしたい） */
+    /* 設定の初期値 */
+    let settings = {
+        fixAttendanceTable: false,
+        emphasisOnPassing: false,
+    };
+    settings = await chrome.storage.local.get(settings);
+
     // h2要素の取得は現在のページを判定するのに必要
     const h2 = document.querySelector('h2');
 
-    // 成績詳細表示 成績ページでないならポップアップに返す何もないデータを設定する
+    // 成績ページでgradePage関数を呼び出し 成績ページでないならポップアップに返す何もないデータを設定する
     const isScorePage = (h2 !== null && h2.textContent.includes('成績照会'));
     if (isScorePage === true) {
-        grades();
+        gradesPage(settings);
     } else {
         // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
         chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
@@ -157,16 +166,11 @@ async function main() {
         });
     }
 
-    // 出席表表示修正 出席ページでない、または設定がオフなら何もしない
+    // 出欠表ページでattendancePage関数を呼び出し 出席ページでないなら呼び出さない
     const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
     if (isAttendancePage === true) {
-        const settings = await chrome.storage.local.get('fixAttendanceTable');
-        if (settings.fixAttendanceTable !== undefined && settings.fixAttendanceTable === true) {
-            attendance();
-        }
+        attendancePage(settings);
     }
 }
 
-window.addEventListener('load', () => {
-    main();
-});
+window.addEventListener('load', main);

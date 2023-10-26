@@ -8,6 +8,10 @@
         "tabs",
         "storage"
     ],
+    "background": {
+        "service_worker": "./background/background.js",
+        "type": "module"
+    },
     "content_scripts": [
         {
             "matches": ["https://portal.uprx.ce.nihon-u.ac.jp/uprx/up/*"],
