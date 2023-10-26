@@ -8,11 +8,7 @@ window.addEventListener('load', async () => {
 
     // 出欠表表示修正のチェックボックスの初期値設定
     const fixAttendanceTableCheckbox = document.querySelector('#fixAttendanceTableCheckBox');
-    if (settings.fixAttendanceTable === false) {
-        fixAttendanceTableCheckbox.checked = false;
-    } else {
-        fixAttendanceTableCheckbox.checked = settings.fixAttendanceTable;
-    }
+    fixAttendanceTableCheckbox.checked = settings.fixAttendanceTable;
 
     // 出欠表表示修正のチェックボックスの初期値設定
     const emphasisOnPassingCheckbox = document.querySelector('#emphasisOnPassingCheckBox');
