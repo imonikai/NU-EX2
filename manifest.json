@@ -11,14 +11,14 @@
     "content_scripts": [
         {
             "matches": ["https://portal.uprx.ce.nihon-u.ac.jp/uprx/up/*"],
-            "js": ["content.js"],
+            "js": ["./content/main.js"],
             "run_at":"document_end"
         }
     ],
     "action":{
-        "default_popup":"popup.html"
+        "default_popup":"./popup/popup.html"
     },
     "options_ui": {
-        "page": "option.html"
+        "page": "./option/option.html"
     }
 }
