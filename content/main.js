@@ -18,21 +18,25 @@ async function gradesPage(settings) {
     let sumRishuchu = 0; // 合計履修中単位数
     let gpa = 0; // GPA
 
-    for (let i = 0; i < KAMOKU_ARRAY.length; i += 1) {
-        if (KAMOKU_ARRAY[i].textContent.includes('（必修）') || KAMOKU_ARRAY[i].textContent.includes('（選択）') || KAMOKU_ARRAY[i].textContent.includes('専門教育科目')) {
+    /* 成績表の指定された行の情報を上記の変数から読み取って、処理を行う関数 */
+    function processTableRow(index) {
+        if (KAMOKU_ARRAY[index].textContent.includes('（必修）')
+         || KAMOKU_ARRAY[index].textContent.includes('（選択）')
+         || KAMOKU_ARRAY[index].textContent.includes('専門教育科目')) {
             // 連想配列のキーを設定、存在していなかった場合は0で初期化
-            dicKey = KAMOKU_ARRAY[i].textContent;
+            dicKey = KAMOKU_ARRAY[index].textContent;
             if ((dicKey in shutokuDic) === false) {
                 shutokuDic[dicKey] = 0;
                 rishuchuDic[dicKey] = 0;
-                kamokuNameArray.push(KAMOKU_ARRAY[i].textContent);
+                kamokuNameArray.push(KAMOKU_ARRAY[index].textContent);
             }
         }
 
-        const tani = Number(TANI_ARRAY[i].textContent);
+        /* 単位 */
+        const tani = Number(TANI_ARRAY[index].textContent);
 
         // 合格単位数と履修中単位数を計算する。
-        switch (HYOKA_ARRAY[i].textContent) {
+        switch (HYOKA_ARRAY[index].textContent) {
         case 'S':
         case 'A':
         case 'B':
@@ -48,7 +52,7 @@ async function gradesPage(settings) {
         }
 
         // 重み付けした評価の総計を計算する
-        switch (HYOKA_ARRAY[i].textContent) {
+        switch (HYOKA_ARRAY[index].textContent) {
         case 'S':
             sumHyoka += tani * 4;
             break;
@@ -64,33 +68,38 @@ async function gradesPage(settings) {
         }
 
         // 合計履修数を計算する
-        switch (HYOKA_ARRAY[i].textContent) {
+        switch (HYOKA_ARRAY[index].textContent) {
         case 'S':
         case 'A':
         case 'B':
         case 'C':
         case 'D':
         case 'E':
-            sumRishu += Number(TANI_ARRAY[i].textContent);
+            sumRishu += Number(TANI_ARRAY[index].textContent);
             break;
         }
 
         // 合格した科目を緑、不合格の科目を赤で強調する。（設定でオフならしない）
         if (settings.emphasisOnPassing === true) {
-            switch (HYOKA_ARRAY[i].textContent) {
+            switch (HYOKA_ARRAY[index].textContent) {
             case 'S':
             case 'A':
             case 'B':
             case 'C':
             case 'N':
-                HYOKA_ARRAY[i].style.background = '#99FF66';
+                HYOKA_ARRAY[index].style.background = '#99FF66';
                 break;
             case 'D':
             case 'E':
-                HYOKA_ARRAY[i].style.background = '#FF82B2';
+                HYOKA_ARRAY[index].style.background = '#FF82B2';
                 break;
             }
         }
+    }
+
+    /* すべての行の情報分処理を行う */
+    for (let i = 0; i < KAMOKU_ARRAY.length; i += 1) {
+        processTableRow(i);
     }
 
     // GPAを計算する
