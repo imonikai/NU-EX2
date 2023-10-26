@@ -7,7 +7,6 @@ window.addEventListener('load', async () => {
     settings = await chrome.storage.local.get(settings);
 
     // 出欠表表示修正のチェックボックスの初期値設定
-    // const fixAttendanceTableFlag = await chrome.storage.local.get('fixAttendanceTable');
     const fixAttendanceTableCheckbox = document.querySelector('#fixAttendanceTableCheckBox');
     if (settings.fixAttendanceTable === false) {
         fixAttendanceTableCheckbox.checked = false;
@@ -16,7 +15,6 @@ window.addEventListener('load', async () => {
     }
 
     // 出欠表表示修正のチェックボックスの初期値設定
-    // const emphasisOnPassingFlag = await chrome.storage.local.get('emphasisOnPassing');
     const emphasisOnPassingCheckbox = document.querySelector('#emphasisOnPassingCheckBox');
     emphasisOnPassingCheckbox.checked = settings.emphasisOnPassing;
 
