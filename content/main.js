@@ -1,5 +1,5 @@
 /* 成績詳細表示のコード */
-function grades() {
+async function grades() {
     const KAMOKU_ARRAY = Array.from(document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7')); // 科目名の配列を取得
 
     const TANI_ARRAY = Array.from(document.querySelectorAll('.colTani')); // 単位数の配列を取得
@@ -17,6 +17,8 @@ function grades() {
     let sumShutoku = 0; // 合計取得単位数
     let sumRishuchu = 0; // 合計履修中単位数
     let gpa = 0; // GPA
+
+    const emphasisOnPassingFlag = await chrome.storage.local.get('emphasisOnPassing'); // 合否強調表示のフラグ
 
     for (let i = 0; i < KAMOKU_ARRAY.length; i += 1) {
         if (KAMOKU_ARRAY[i].textContent.includes('（必修）') || KAMOKU_ARRAY[i].textContent.includes('（選択）') || KAMOKU_ARRAY[i].textContent.includes('専門教育科目')) {
@@ -76,23 +78,21 @@ function grades() {
         }
 
         // 合格した科目を緑、不合格の科目を赤で強調する。（設定でオフならしない）
-        chrome.storage.local.get('emphasisOnPassing').then((obj) => {
-            if (obj.emphasisOnPassing !== undefined && obj.emphasisOnPassing === true) {
-                switch (HYOKA_ARRAY[i].textContent) {
-                case 'S':
-                case 'A':
-                case 'B':
-                case 'C':
-                case 'N':
-                    HYOKA_ARRAY[i].style.background = '#99FF66';
-                    break;
-                case 'D':
-                case 'E':
-                    HYOKA_ARRAY[i].style.background = '#FF82B2';
-                    break;
-                }
+        if (emphasisOnPassingFlag.emphasisOnPassing !== undefined && emphasisOnPassingFlag.emphasisOnPassing === true) {
+            switch (HYOKA_ARRAY[i].textContent) {
+            case 'S':
+            case 'A':
+            case 'B':
+            case 'C':
+            case 'N':
+                HYOKA_ARRAY[i].style.background = '#99FF66';
+                break;
+            case 'D':
+            case 'E':
+                HYOKA_ARRAY[i].style.background = '#FF82B2';
+                break;
             }
-        });
+        }
     }
 
     // GPAを計算する
@@ -141,7 +141,7 @@ function attendance() {
     }, 1000);
 }
 
-function main() {
+async function main() {
     // h2要素の取得は現在のページを判定するのに必要
     const h2 = document.querySelector('h2');
 
@@ -160,11 +160,10 @@ function main() {
     // 出席表表示修正 出席ページでない、または設定がオフなら何もしない
     const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
     if (isAttendancePage === true) {
-        chrome.storage.local.get('fixAttendanceTable').then((obj) => {
-            if (obj.fixAttendanceTable !== undefined && obj.fixAttendanceTable === true) {
-                attendance();
-            }
-        });
+        const settings = await chrome.storage.local.get('fixAttendanceTable');
+        if (settings.fixAttendanceTable !== undefined && settings.fixAttendanceTable === true) {
+            attendance();
+        }
     }
 }
 
