@@ -160,6 +160,9 @@ async function main() {
     };
     settings = await chrome.storage.local.get(settings);
 
+    /* ポップアップするデータを設定されているかのフラグ */
+    let existPopupData = false;
+
     // h2要素の取得は現在のページを判定するのに必要
     const h2 = document.querySelector('h2');
 
@@ -167,18 +170,21 @@ async function main() {
     const isScorePage = (h2 !== null && h2.textContent.includes('成績照会'));
     if (isScorePage === true) {
         gradesPage(settings);
-    } else {
-        // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
-        chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
-            sendReponse({ status: 'default' });
-            return true;
-        });
+        existPopupData = true;
     }
 
     // 出欠表ページでattendancePage関数を呼び出し 出席ページでないなら呼び出さない
     const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
     if (isAttendancePage === true) {
         attendancePage(settings);
+    }
+
+    // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
+    if (existPopupData === false) {
+        chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
+            sendReponse({ status: 'default' });
+            return true;
+        });
     }
 }
 
