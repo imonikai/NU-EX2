@@ -109,7 +109,7 @@ async function gradesPage(settings) {
     chrome.runtime.onMessage.addListener((request, sender, sendReponse) => {
         sendReponse(
             {
-                status: 'OK',
+                status: 'gradesPage',
                 shutokuDic,
                 rishuchuDic,
                 kamokuNameArray,

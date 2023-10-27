@@ -50,7 +50,7 @@ window.addEventListener('load', () => {
         }
         chrome.tabs.sendMessage(tabs[0].id, { message: 'NU-PortalExtension' }, (response) => {
             const divElement = document.querySelector('#container');
-            if (response !== undefined && response.status === 'OK') {
+            if (response.status === 'gradesPage') {
                 divElement.textContent = '';
 
                 const shutokuTable = createTable('取得済み単位', response.shutokuDic, response.kamokuNameArray);
