@@ -152,13 +152,8 @@ function attendancePage(settings) {
 }
 
 async function main() {
-    /* 設定を読み込み（この書き方どうにかしたい） */
-    /* 設定の初期値 */
-    let settings = {
-        fixAttendanceTable: false,
-        emphasisOnPassing: false,
-    };
-    settings = await chrome.storage.local.get(settings);
+    /* 設定を読み込み */
+    const mySettings = (await chrome.storage.local.get('settings')).settings;
 
     /* ポップアップするデータを設定されているかのフラグ */
     let existPopupData = false;
@@ -169,14 +164,14 @@ async function main() {
     // 成績ページでgradePage関数を呼び出し 成績ページでないならポップアップに返す何もないデータを設定する
     const isScorePage = (h2 !== null && h2.textContent.includes('成績照会'));
     if (isScorePage === true) {
-        gradesPage(settings);
+        gradesPage(mySettings);
         existPopupData = true;
     }
 
     // 出欠表ページでattendancePage関数を呼び出し 出席ページでないなら呼び出さない
     const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
     if (isAttendancePage === true) {
-        attendancePage(settings);
+        attendancePage(mySettings);
     }
 
     // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
