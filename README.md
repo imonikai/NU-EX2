@@ -2,7 +2,7 @@
 
 ## これは何
 
-[NU-PortalExtension](https://github.com/Imonikai/NU-PortalExtension "NU-PortalExtensionのリポジトリ")の新ポータルサイト対応版　※非公式ツールです。
+過去に作ったNU-PortalExtension（リポジトリは削除しました）の新ポータルサイト対応版　※非公式ツールです。
 
 メインの機能は、GPA計算と取得済み・履修中単位数の表示です。
 
