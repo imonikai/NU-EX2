@@ -2,11 +2,13 @@
 
 ## これは何
 
-[NU-PortalExtension](https://github.com/Imonikai/NU-PortalExtension "NU-PortalExtensionのリポジトリ")の新ポータルサイト対応版
+[NU-PortalExtension](https://github.com/Imonikai/NU-PortalExtension "NU-PortalExtensionのリポジトリ")の新ポータルサイト対応版　※非公式ツールです。
 
 メインの機能は、GPA計算と取得済み・履修中単位数の表示です。
 
 ポータルサイトの成績ページで拡張機能のアイコンをクリックするとポップアップで表示します。
+
+作者への連絡先: cehd21067🛠g.nihon-u.ac.jp　（🛠を@に置き換える）
 
 ### 【注意】教職課程を履修している人は使えないかもしれません😓
 
