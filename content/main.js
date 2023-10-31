@@ -1,5 +1,5 @@
 /* 成績ページの関数 */
-async function gradesPage(settings) {
+function gradesPage(settings) {
     const KAMOKU_ARRAY = Array.from(document.querySelectorAll('.kamokuLevel1, .kamokuLevel2, .kamokuLevel7')); // 科目名の配列を取得
 
     const TANI_ARRAY = Array.from(document.querySelectorAll('.colTani')); // 単位数の配列を取得
@@ -161,7 +161,7 @@ async function main() {
     // h2要素の取得は現在のページを判定するのに必要
     const h2 = document.querySelector('h2');
 
-    // 成績ページでgradePage関数を呼び出し 成績ページでないならポップアップに返す何もないデータを設定する
+    // 成績ページでgradePage関数を呼び出し 成績ページでないなら呼び出さない
     const isScorePage = (h2 !== null && h2.textContent.includes('成績照会'));
     if (isScorePage === true) {
         gradesPage(mySettings);
