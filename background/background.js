@@ -2,7 +2,6 @@
 chrome.runtime.onInstalled.addListener(async () => {
     /* 設定の初期値 */
     let mySettings = {
-        fixAttendanceTable: false,
         emphasisOnPassing: false,
     };
 

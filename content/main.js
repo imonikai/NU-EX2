@@ -122,35 +122,6 @@ function gradesPage(settings) {
     });
 }
 
-/* 出欠表ページの関数 */
-function attendancePage(settings) {
-    /* テーブルの修正関数 */
-    function fixAttendanceTable() {
-        document.querySelector('.scroll_div').style.height = '100%';
-        const midashiTables = document.querySelectorAll('.fixed_header_display_none_at_print');
-        midashiTables.forEach((e) => e.parentNode.removeChild(e));
-    }
-
-    /* 出欠表のテーブルが出来るまで待ち、テーブルができたら表示修正をする（設定でオフなら何もしない） */
-    if (settings.fixAttendanceTable === true) {
-        let tableExistCheckCount = 0;
-        const intervalId = setInterval(() => {
-            tableExistCheckCount += 1;
-            console.log(`出席テーブルが存在するか調べています。チェック回数:${tableExistCheckCount}`);
-            if (document.querySelector('.scroll_div') !== null) {
-                console.log('出席テーブルが見つかりました。チェックを停止します。');
-                clearInterval(intervalId);
-                console.log('チェックが停止されたはずです。');
-                fixAttendanceTable();
-            } else if (tableExistCheckCount === 10) {
-                console.log('出席テーブルが存在しませんでした。チェックを停止します。');
-                clearInterval(intervalId);
-                console.log('チェックが停止されたはずです。');
-            }
-        }, 1000);
-    }
-}
-
 async function main() {
     /* 設定を読み込み */
     const mySettings = (await chrome.storage.local.get('settings')).settings;
@@ -166,12 +137,6 @@ async function main() {
     if (isScorePage === true) {
         gradesPage(mySettings);
         existPopupData = true;
-    }
-
-    // 出欠表ページでattendancePage関数を呼び出し 出席ページでないなら呼び出さない
-    const isAttendancePage = (h2 !== null && h2.textContent.includes('学生出欠状況確認'));
-    if (isAttendancePage === true) {
-        attendancePage(mySettings);
     }
 
     // ポップアップされたときに返すデータがないとエラーになるので、何もないデータを返すことにしておく
